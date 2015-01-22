@@ -1,0 +1,20 @@
+{
+    "name" : "sat8bit/matomepp",
+    "version" : "0.0.1",
+    "require" : {
+        "symfony/console": "3.0.*@dev",
+        "videlalvaro/php-amqplib": "2.4.*@dev",
+        "pimple/pimple": "3.0.*@dev"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "sat8bit\\Matomepp\\" : "src/Matomepp/"
+        }
+    },
+    "bin": [
+        "matomepp"
+    ],
+    "config": {
+        "bin-dir": "bin"
+    }
+}

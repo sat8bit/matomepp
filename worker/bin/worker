@@ -1,0 +1,39 @@
+#!/usr/bin/env php
+<?php
+
+use PhpAmqpLib\Message\AMQPMessage;
+use sat8bit\Matomepp\RSS;
+
+foreach (array(__DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php') as $file) {
+    if (file_exists($file)) {
+        require $file;
+        break;
+    }
+}
+
+$di = require_once __DIR__ . '/../src/di.php';
+
+$blogRepo = $di['blogRepo'];
+$channel = $di['amqpChannelRssUrl'];
+
+foreach($blogRepo->findAll() as $blog) {
+    $channel->basic_publish(new AMQPMessage($blog->getRssUrl()), '', 'rssurl');
+}
+
+$rssRepo = $di['rssRepo'];
+$callback = function($msg) use ($rssRepo, $channel) {
+    $url = $msg->body;
+    try {
+        $rssRepo->store(new RSS\RSS($url));
+        $channel->basic_publish(new AMQPMessage($url), '', 'rssurl');
+        echo "[x] read $url\n";
+    } catch (\Exception $e) {
+        echo "[ ] error ! {$e->getMessage()}\n";
+    }
+    sleep(10);
+};
+
+$channel->basic_consume('rssurl', '', false, true, false, false, $callback);
+while(count($channel->callbacks)) {
+    $channel->wait();
+}
