@@ -1,0 +1,5 @@
+export PORT=8080
+export DB_HOST="localhost"
+export DB_USER="matomepp"
+export DB_PASSWORD="matomepp"
+export DB_NAME="matomepp"
