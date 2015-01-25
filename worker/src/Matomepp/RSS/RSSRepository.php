@@ -24,13 +24,21 @@ class RSSRepository
      */
     public function store(RSS $rss)
     {
-        $blogId = $this->insertBlog(array(
-            'title' => $rss->channel->title,
-            'index_url' => $rss->channel->link,
-            'rss_url' => $rss->getUrl()
-        ));
+        $blogId = $this->selectBlogId($rss->getUrl());
+
+        if (empty($blogId)) {
+            $blogId = $this->insertBlog(array(
+                'title' => $rss->channel->title,
+                'index_url' => $rss->channel->link,
+                'rss_url' => $rss->getUrl()
+            ));
+        }
 
         foreach ($rss->item as $item) {
+            if ($this->selectArticle($item->link)) {
+                break;
+            }
+
             $this->insertArticle(array(
                'url' => $item->link,
                'title' => $item->title,
@@ -41,7 +49,7 @@ class RSSRepository
         }
     }
 
-    protected function insertBlog(array $params)
+    protected function selectBlogId($rssUrl)
     {
         $stmt = $this->pdo->prepare("
             SELECT
@@ -49,17 +57,21 @@ class RSSRepository
             FROM
                 blogs
             WHERE
-                index_url = :index_url
+                rss_url = :rss_url
         ");
 
-        $stmt->bindValue(':index_url', $params['index_url'], PDO::PARAM_STR);
+        $stmt->bindValue(':rss_url', $rssUrl, PDO::PARAM_STR);
         $stmt->execute();
 
-        $blogId = null;
         if ($record = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $blogId = $record['blog_id'];
+            return $record['blog_id'];
         }
-        
+
+        return null;
+    }
+
+    protected function insertBlog(array $params)
+    {
         $stmt = $this->pdo->prepare("
             INSERT INTO blogs(
                 title
@@ -71,8 +83,6 @@ class RSSRepository
               , :index_url
               , :rss_url
             )
-            ON DUPLICATE KEY UPDATE
-                title = :title
         ");
 
         $stmt->bindValue(':title', $params['title'], PDO::PARAM_STR);
@@ -81,7 +91,28 @@ class RSSRepository
 
         $stmt->execute();
 
-        return $blogId ?: $this->pdo->lastInsertId();
+        return $this->pdo->lastInsertId();
+    }
+
+    protected function selectArticle($url)
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT
+                url
+              , title
+              , description
+              , date
+              , blog_id
+            FROM
+                articles
+            WHERE
+                url = :url
+        ");
+
+        $stmt->bindValue(':url', $url, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     protected function insertArticle(array $params)
@@ -101,11 +132,6 @@ class RSSRepository
               , :date
               , :blog_id
             )
-            ON DUPLICATE KEY UPDATE
-                title = :title
-              , description = :description
-              , date = :date
-              , blog_id = :blog_id
         ");
 
         $stmt->bindValue(':url', $params['url'], PDO::PARAM_STR);
