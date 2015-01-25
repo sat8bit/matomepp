@@ -1,0 +1,35 @@
+<% extend 'layout.ect' %>
+
+<% block 'navbarmenu' :%>
+<% end %>
+
+<% block 'script' : %>
+<script>
+    $(function() {
+
+        // load pages
+
+        var head = 1;
+        var loading = false;
+
+        loadBlogs();
+
+        function loadBlogs() {
+            $.getJSON('/apis/blogs', {}, function(json) {
+                var root = $('#blogs-list');
+                $.each(json, function() {
+                    root.append(
+                        '<a target="_blank" href="' + this.index_url + '" class="list-group-item">'
+                            + '<h6 class="list-group-item-heading">' + this.blog_name + '</h6>'
+                            + '<p class="list-group-item-text text-right">' + this.index_url + '</p>'
+                        + '</a>'
+                    );
+                });
+            });
+        };
+    });
+</script>
+<% end %>
+
+<div id="blogs-list" class="list-group">
+</div>

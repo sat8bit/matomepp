@@ -25,7 +25,7 @@ router.get('/articles', function(req, res, next) {
 });
 
 router.get('/blogs', function(req, res, next) {
-    connection.execute('select blog_id, title blog_name from blogs order by blog_id desc limit :start, :results'
+    connection.execute('select blog_id, title blog_name, index_url from blogs order by blog_id desc limit :start, :results'
     ,{
         start : req.query.start || 0
       , results : req.query.results || 20

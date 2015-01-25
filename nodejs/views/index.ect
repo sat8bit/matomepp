@@ -1,172 +1,102 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="utf-8">
-    <meta name="description" content="暇つぶしに最適な軽量なまとめのアンテナ">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width , initial-scale=1.0, minimum-scale=1.0 , maximum-scale=1.0" />
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" type="image/png" href="/images/logo.png">
-    <link rel="apple-touch-icon" type="image/png" href="/images/logo.png">
+<% extend 'layout.ect' %>
 
-    <title>まとめ速報++</title>
+<% block 'navbarmenu' :%>
+<form id="search-form" class="navbar-form navbar-right" role="search">
+  <div class="form-group">
+    <input id="needle" type="text" class="form-control" value="" placeholder="Input keyword...">
+  </div>
+</form>
+<ul class="nav navbar-nav navbar-right">
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">おすすめ <span class="caret"></span></a>
+    <ul id="recommendation-list" class="dropdown-menu" role="menu"></ul>
+  </li>
+</ul>
+<% end %>
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <style>
-        .content {
-            padding-left:0px;
-            padding-right:0px;
+<% block 'script' : %>
+<script>
+    $(function() {
+
+        // load pages
+
+        var head = 1;
+        var loading = false;
+
+        setTagToNeedle();
+        init();
+        loadRecommendations();
+
+        function init() {
+            head = 1;
+            root = $('#articles-list').empty();
+            loadArticles();
         }
-        a {
-            -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
-            tap-highlight-color:rgba(0, 0, 0, 0);
-            cursor:pointer;
+
+        function setTagToNeedle() {
+            $('#needle').val(decodeURI(window.location.hash.substring(1)));
         }
-        .list-group-item-text {
-            font-size:x-small;
-        }
-    </style>
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', 'UA-58438845-2', 'auto');
-        ga('send', 'pageview');
-    </script>
-  </head>
 
-  <body>
-
-    <header class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button id="navbar-toggle" class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".search-navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">まとめ速報++</a>
-        </div>
-        <nav class="navbar-collapse search-navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
-          <form id="search-form" class="navbar-form navbar-right" role="search">
-            <div class="form-group">
-              <input id="needle" type="text" class="form-control" value="" placeholder="Input keyword...">
-            </div>
-          </form>
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">おすすめ <span class="caret"></span></a>
-              <ul id="recommendation-list" class="dropdown-menu" role="menu"></ul>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-
-    <div class="content container" style="margin-top:50px">
-        <div id="articles-list" class="list-group">
-        </div>
-        <div class="text-center"><button id="next-button" class="btn btn-default">続きを見る</button></div>
-    </div><!-- /.container -->
-
-    <hr>
-
-    <footer class="footer">
-      <div class="container">
-        <p class="text-center">(C) 2015 <a href="https://twitter.com/matomeppnet">matomepp.net</a></p>
-      </div>
-    </footer>
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <script>
-        $(function() {
-
-            // load pages
-
-            var head = 1;
-            var loading = false;
-
-            setTagToNeedle();
-            init();
-            loadRecommendations();
-
-            function init() {
-                head = 1;
-                root = $('#articles-list').empty();
-                loadArticles();
-            }
-
-            function setTagToNeedle() {
-                $('#needle').val(decodeURI(window.location.hash.substring(1)));
-            }
-
-            function loadRecommendations() {
-                $.getJSON('/apis/recommendations', {}, function(json) {
-                    var root = $('#recommendation-list');
-                    $.each(json, function() {
-                        root.append('<li><a class="change-needle-link">' + this.keyword + '</a></li>');
-                    });
-                    $('.change-needle-link').click(function() {
-                        setHash($(this).text());
-                        setTagToNeedle();
-                        init();
-                        toggleNavbarOnSp();
-                    });
+        function loadRecommendations() {
+            $.getJSON('/apis/recommendations', {}, function(json) {
+                var root = $('#recommendation-list');
+                $.each(json, function() {
+                    root.append('<li><a class="change-needle-link">' + this.keyword + '</a></li>');
                 });
-            }
-
-            function loadArticles() {
-                if (loading) {
-                    return;
-                }
-                loading = true;
-
-                $.getJSON('/apis/articles', {start:head, needle:$('#needle').val()}, function(json) {
-                    var root = $('#articles-list');
-                    $.each(json, function() {
-                        root.append(
-                            '<a href="' + this.url + '" class="list-group-item">'
-                                + '<h6 class="list-group-item-heading">' + this.title + '</h6>'
-                                + '<p class="list-group-item-text text-right">' + this.blog_name + '</p>'
-                            + '</a>'
-                        );
-                    });
-                    head += 20;
-                    loading = false;
+                $('.change-needle-link').click(function() {
+                    setHash($(this).text());
+                    setTagToNeedle();
+                    init();
+                    toggleNavbarOnSp();
                 });
-            };
-
-            function setHash(hash) {
-                window.location.hash = encodeURI(hash);
-            }
-
-            function toggleNavbarOnSp() {
-                if (window.innerWidth < 768) {
-                    $('#navbar-toggle').click();
-                }
-            }
-
-            $('#search-form').submit(function(){
-                setHash($('#needle').val());
-                $(this).find('input').blur();
-                init();
-                toggleNavbarOnSp();
-                return false;
             });
+        }
 
-            $('#next-button').click(loadArticles);
+        function loadArticles() {
+            if (loading) {
+                return;
+            }
+            loading = true;
 
+            $.getJSON('/apis/articles', {start:head, needle:$('#needle').val()}, function(json) {
+                var root = $('#articles-list');
+                $.each(json, function() {
+                    root.append(
+                        '<a href="' + this.url + '" class="list-group-item">'
+                            + '<h6 class="list-group-item-heading">' + this.title + '</h6>'
+                            + '<p class="list-group-item-text text-right">' + this.blog_name + '</p>'
+                        + '</a>'
+                    );
+                });
+                head += 20;
+                loading = false;
+            });
+        };
+
+        function setHash(hash) {
+            window.location.hash = encodeURI(hash);
+        }
+
+        function toggleNavbarOnSp() {
+            if (window.innerWidth < 768) {
+                $('#navbar-toggle').click();
+            }
+        }
+
+        $('#search-form').submit(function(){
+            setHash($('#needle').val());
+            $(this).find('input').blur();
+            init();
+            toggleNavbarOnSp();
+            return false;
         });
-    </script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  </body>
-</html>
+
+        $('#next-button').click(loadArticles);
+
+    });
+</script>
+<% end %>
+
+<div id="articles-list" class="list-group">
+</div>
+<div class="text-center"><button id="next-button" class="btn btn-default">続きを見る</button></div>
