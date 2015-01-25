@@ -39,6 +39,18 @@ router.get('/blogs', function(req, res, next) {
     });
 });
 
+router.get('/recommendations', function(req, res, next) {
+    connection.execute('select keyword from recommendations order by keyword'
+    ,{}
+    ,function (err, rows) {
+        if (err) {
+            console.log("[error] db error. :" + err);
+            res.json({});
+        }
+        res.json(rows);
+    });
+});
+
 router.get('/blogs/:id(\\d+)/articles', function(req, res, next) {
     connection.execute('select a.title, a.url, a.description, DATE_FORMAT(a.date, "%Y/%m/%d %H:%i:%s") date, b.title blog_name from articles a, blogs b where a.blog_id = b.blog_id AND a.blog_id = :id order by date desc limit :start, :results'
     ,{

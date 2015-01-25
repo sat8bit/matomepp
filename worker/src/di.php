@@ -14,6 +14,10 @@ $container['amqpChannelRssUrl'] = $container->factory(function($c) {
     return $channel;
 });
 
+$container['recommendationRepo'] = $container->factory(function($c) {
+    return new sat8bit\Matomepp\Recommendation\RecommendationRepository($c['pdo']);
+});
+
 $container['blogRepo'] = $container->factory(function($c) {
     return new sat8bit\Matomepp\Blog\BlogRepository($c['pdo']);
 });
