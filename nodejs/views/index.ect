@@ -20,7 +20,7 @@
 
         // load pages
 
-        var head = 1;
+        var head = 0;
         var loading = false;
 
         setTagToNeedle();
@@ -28,7 +28,7 @@
         loadRecommendations();
 
         function init() {
-            head = 1;
+            head = 0;
             root = $('#articles-list').empty();
             loadArticles();
         }
