@@ -1,4 +1,4 @@
 vendor
 npm-debug.log
-nodejs/node_modules
+node_modules
 */logs/*
