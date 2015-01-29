@@ -13,9 +13,13 @@ router.get('/blogs', function(req, res, next) {
 
 router.get('/pickup/:article_id(\\d+)', function(req, res, next) {
     pickup = db.findArticle(req.params.article_id, function(rows) {
-        var pickup = rows[0];
-
-        res.render('index', {title:'【Pickup】' + pickup.title + ' - まとめ速報++', pickup: pickup});
+        if (rows.length) {
+            var pickup = rows[0];
+            res.render('index', {title:'【Pickup】' + pickup.title + ' - まとめ速報++', pickup: pickup});
+        }
+        else {
+            res.redirect('/');
+        }
     });
 });
 
