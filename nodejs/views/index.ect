@@ -97,6 +97,19 @@
 </script>
 <% end %>
 
+<% if @pickup : %>
+
+<div id="pickup" class="panel panel-primary">
+  <div class="panel-heading">Pickup記事</div>
+  <div class="panel-body list-group" style="padding:0px">
+     <a href="<%= @pickup.url %>" class="list-group-item">
+       <h5 class="list-group-item-heading"><%= @pickup.title %></h5>
+       <p class="list-group-item-text text-right"><%= @pickup.blog_name %></p>
+     </a>
+  </div>
+</div>
+
+<% end %>
 <div id="articles-list" class="list-group">
 </div>
 <div class="text-center"><button id="next-button" class="btn btn-default">続きを見る</button></div>

@@ -1,5 +1,4 @@
 var express = require('express');
-var mysql = require('mysql2');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -11,14 +10,6 @@ var routes = require('./routes/index');
 var apis = require('./routes/apis');
 
 var app = express();
-
-connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-});
-connection.config.namedPlaceholders = true;
 
 // view engine setup
 app.engine('ect', ECT({ watch: true, root: __dirname + '/views', ext: '.ect' }).render);

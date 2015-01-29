@@ -6,16 +6,24 @@
 <% block 'script' : %>
 <script>
     $(function() {
-
-        // load pages
-
         var head = 1;
         var loading = false;
 
-        loadBlogs();
+        init();
+
+        function init() {
+            head = 1;
+            root = $('#blogs-list').empty();
+            loadBlogs();
+        }
 
         function loadBlogs() {
-            $.getJSON('/apis/blogs', {}, function(json) {
+            if (loading) {
+                return;
+            }
+            loading = true;
+
+            $.getJSON('/apis/blogs', {start:head, needle:$('#needle').val()}, function(json) {
                 var root = $('#blogs-list');
                 $.each(json, function() {
                     root.append(
@@ -25,11 +33,16 @@
                         + '</a>'
                     );
                 });
+                head += 20;
+                loading = false;
             });
         };
+
+        $('#next-button').click(loadBlogs);
     });
 </script>
 <% end %>
 
 <div id="blogs-list" class="list-group">
 </div>
+<div class="text-center"><button id="next-button" class="btn btn-default">続きを見る</button></div>
