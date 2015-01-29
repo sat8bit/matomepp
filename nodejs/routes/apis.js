@@ -3,8 +3,6 @@ var router = express.Router();
 
 var db = require('../models/db');
 
-console.log(db);
-
 router.get('/articles', function(req, res, next) {
     if (req.query.needle) {
         db.findArticlesByNeedle({
