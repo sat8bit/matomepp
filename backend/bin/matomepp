@@ -11,4 +11,5 @@ $application = new Application();
 $application->add(new sat8bit\Matomepp\Command\RSSReadCommand($di));
 $application->add(new sat8bit\Matomepp\Command\BlogEnqueueCommand($di));
 $application->add(new sat8bit\Matomepp\Command\RecommendationAddCommand($di));
+$application->add(new sat8bit\Matomepp\Command\PickupTweetCommand($di));
 $application->run();

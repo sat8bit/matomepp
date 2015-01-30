@@ -4,20 +4,72 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e02671bd51157643a9ae5607168ae07b",
+    "hash": "c8be10f93dbd369c57ae88c91d6f2083",
     "packages": [
+        {
+            "name": "abraham/twitteroauth",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/abraham/twitteroauth.git",
+                "reference": "875918bad4f1e9651635ee3107f5edcce34b4acd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/abraham/twitteroauth/zipball/875918bad4f1e9651635ee3107f5edcce34b4acd",
+                "reference": "875918bad4f1e9651635ee3107f5edcce34b4acd",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpmd/phpmd": "2.*",
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Abraham\\TwitterOAuth\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Abraham Williams",
+                    "email": "abraham@abrah.am",
+                    "homepage": "https://abrah.am",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The most popular PHP library for use with the Twitter OAuth REST API.",
+            "homepage": "https://twitteroauth.com",
+            "keywords": [
+                "api",
+                "oauth",
+                "rest",
+                "social",
+                "twitter"
+            ],
+            "time": "2015-01-22 21:47:15"
+        },
         {
             "name": "pimple/pimple",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Pimple.git",
-                "reference": "718d503a0047ccaa724d6ee4804a6de8b774fdad"
+                "reference": "2bcd90124a31bcf61804b9eb5badb85679469921"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/718d503a0047ccaa724d6ee4804a6de8b774fdad",
-                "reference": "718d503a0047ccaa724d6ee4804a6de8b774fdad",
+                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/2bcd90124a31bcf61804b9eb5badb85679469921",
+                "reference": "2bcd90124a31bcf61804b9eb5badb85679469921",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +102,7 @@
                 "container",
                 "dependency injection"
             ],
-            "time": "2015-01-16 14:35:03"
+            "time": "2015-01-26 16:18:50"
         },
         {
             "name": "symfony/console",
@@ -59,12 +111,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "36d66cad2836b744f658e1824eeb3f0f44e39a95"
+                "reference": "e32f0018268c297698090023a9340107f874703d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/36d66cad2836b744f658e1824eeb3f0f44e39a95",
-                "reference": "36d66cad2836b744f658e1824eeb3f0f44e39a95",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/e32f0018268c297698090023a9340107f874703d",
+                "reference": "e32f0018268c297698090023a9340107f874703d",
                 "shasum": ""
             },
             "require": {
@@ -107,7 +159,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-16 15:47:11"
+            "time": "2015-01-25 19:10:41"
         },
         {
             "name": "videlalvaro/php-amqplib",
@@ -170,7 +222,8 @@
     "stability-flags": {
         "symfony/console": 20,
         "videlalvaro/php-amqplib": 20,
-        "pimple/pimple": 20
+        "pimple/pimple": 20,
+        "abraham/twitteroauth": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

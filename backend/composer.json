@@ -4,7 +4,8 @@
     "require" : {
         "symfony/console": "3.0.*@dev",
         "videlalvaro/php-amqplib": "2.4.*@dev",
-        "pimple/pimple": "3.0.*@dev"
+        "pimple/pimple": "3.0.*@dev",
+        "abraham/twitteroauth": "dev-master"
     },
     "autoload" : {
         "psr-4" : {
