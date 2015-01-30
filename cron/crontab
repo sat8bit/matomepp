@@ -1,1 +1,1 @@
-0,10,20,30,40,50 * * * * ~/matomepp/backend/bin/matomepp pickuptweet $((RANDOM % 3000)) 2> /dev/null
+*/10 * * * * ~/matomepp/backend/bin/matomepp pickuptweet
