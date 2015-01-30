@@ -54,17 +54,22 @@ class ArticleRepository
     /**
      * @return Article
      */
-    public function findNewestArticle()
+    public function findNewestArticleWithoutTweets()
     {
         $stmt = $this->pdo->prepare("
             SELECT
-                article_id
-              , title
-              , url
+                a.article_id
+              , a.title
+              , a.url
             FROM
-                articles
+                articles a
+                    LEFT JOIN
+                        tweets t ON
+                            a.article_id = t.article_id
+            WHERE
+                t.updated_at IS NULL
             ORDER BY
-                date DESC
+                a.date DESC
             LIMIT 1
         ");
 

@@ -45,8 +45,10 @@ class PickupTweetCommand extends Command
         if (!empty($articleId)) {
             $article = $this->container['articleRepo']->findByArticleId($articleId);
         } else {
-            $article = $this->container['articleRepo']->findNewestArticle();
+            $article = $this->container['articleRepo']->findNewestArticleWithoutTweets();
         }
+
+var_dump($article);
 
         if (empty($article)) {
             $output->writeln("no such article. article-id:$articleId");

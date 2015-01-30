@@ -9,7 +9,7 @@ $container['amqpConnection'] = function($c) {
 };
 
 $container['pickupTweetService'] = function($c) {
-    return new sat8bit\Matomepp\Service\PickupTweetService($c['twitteroauth']);
+    return new sat8bit\Matomepp\Service\PickupTweetService($c['twitteroauth'], $c['pdo']);
 };
 
 $container['twitteroauth'] = function($c) {
