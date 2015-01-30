@@ -21,7 +21,7 @@ class ArticleRepository
 
     /**
      * @param int $articleId
-     * @return array
+     * @return Article
      */
     public function findByArticleId($articleId)
     {
@@ -37,6 +37,37 @@ class ArticleRepository
         ");
 
         $stmt->bindValue(':article_id', $articleId, PDO::PARAM_INT);
+        $stmt->execute();
+        $record = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (empty($record)) {
+            return null;
+        }
+
+        $article = new Article($record['article_id']);
+        $article->setTitle($record['title']);
+        $article->setUrl($record['url']);
+
+        return $article;
+    }
+
+    /**
+     * @return Article
+     */
+    public function findNewestArticle()
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT
+                article_id
+              , title
+              , url
+            FROM
+                articles
+            ORDER BY
+                date DESC
+            LIMIT 1
+        ");
+
         $stmt->execute();
         $record = $stmt->fetch(PDO::FETCH_ASSOC);
 

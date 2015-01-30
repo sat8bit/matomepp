@@ -26,9 +26,7 @@ class PickupTweetService
     public function provide(Article $article)
     {
         $this->twitter->post("statuses/update", array(
-            "status"=> "{$article->getTitle()} - http://matomepp.net/pickup/{$article->getArticleId()}"
+            "status"=> "{$article->getTitle()} >> http://matomepp.net/pickup/{$article->getArticleId()}"
         ));
-        echo $this->twitter->getLastHttpCode();
-        var_dump($this->twitter->getLastBody());
     }
 }

@@ -33,7 +33,7 @@ class PickupTweetCommand extends Command
             ->setDescription('tweet pickup article.')
             ->addArgument(
                 'article-id',
-                InputArgument::REQUIRED,
+                InputArgument::OPTIONAL,
                 'pickup target article identifer.'
             );
     }
@@ -42,15 +42,17 @@ class PickupTweetCommand extends Command
     {
         $articleId = $input->getArgument('article-id');
 
-        $article = $this->container['articleRepo']->findByArticleId($articleId);
+        if (!empty($articleId)) {
+            $article = $this->container['articleRepo']->findByArticleId($articleId);
+        } else {
+            $article = $this->container['articleRepo']->findNewestArticle();
+        }
 
         if (empty($article)) {
             $output->writeln("no such article. article-id:$articleId");
             return;
-        } else {
-            $output->writeln("article_id:$articleId");
-            $output->writeln("title:{$article->getTitle()}");
         }
+
         $this->container['pickupTweetService']->provide($article);
     }
 }
