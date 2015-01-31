@@ -33,6 +33,11 @@ class RSSRepository
                 'rss_url' => $rss->getUrl()
             ));
         }
+        else {
+            $this->updateBlog(array(
+                'rss_url' => $rss->getUrl()
+            ));
+        }
 
         foreach ($rss->item as $item) {
             if ($this->selectArticle($item->link)) {
@@ -92,6 +97,21 @@ class RSSRepository
         $stmt->execute();
 
         return $this->pdo->lastInsertId();
+    }
+
+    protected function updateBlog(array $params)
+    {
+        $stmt = $this->pdo->prepare("
+            UPDATE blogs
+            SET
+                updated_at = now()
+            WHERE
+                rss_url = :rss_url
+        ");
+
+        $stmt->bindValue(':rss_url', $params['rss_url'], PDO::PARAM_STR);
+
+        $stmt->execute();
     }
 
     protected function selectArticle($url)

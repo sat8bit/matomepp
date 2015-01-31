@@ -32,18 +32,18 @@ router.get('/blogs', function(req, res, next) {
     });
 });
 
-router.get('/recommendations', function(req, res, next) {
-    db.findAllRecommendations(function(rows) {
-        res.json(rows);
-    });
-});
-
 router.get('/blogs/:blog_id(\\d+)/articles', function(req, res, next) {
     db.findArticlesByBlogId({
         blog_id : req.params.blog_id,
         start : req.query.start || 0,
         results : req.query.results || 20
     }, function(rows) {
+        res.json(rows);
+    });
+});
+
+router.get('/recommendations', function(req, res, next) {
+    db.findAllRecommendations(function(rows) {
         res.json(rows);
     });
 });

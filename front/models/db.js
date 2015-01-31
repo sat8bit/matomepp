@@ -25,7 +25,7 @@ exports.findArticlesByBlogId = function(binds, callback) {
 };
 
 exports.findAllBlogs = function(binds, callback) {
-    var sql = 'select blog_id, title blog_name, index_url from blogs order by blog_id desc limit :start, :results';
+    var sql = 'select blog_id, title blog_name, index_url, DATE_FORMAT(updated_at, "%Y/%m/%d %H:%i:%s") updated_at from blogs order by blog_id desc limit :start, :results';
 
     execute(sql, binds, callback);
 };
