@@ -51,7 +51,6 @@ var getConnection = function() {
 var execute = function(sql, binds, callback) {
     var connection = getConnection();
 
-console.log(binds);
     connection.execute(sql, binds, function (err, rows) {
         if (err) {
             console.log("[error] db error. :" + err);
