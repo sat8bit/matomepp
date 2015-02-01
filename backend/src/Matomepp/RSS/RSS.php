@@ -70,10 +70,6 @@ class RSS
                 return false;
             }
 
-            if(empty($item->description)) {
-                return false;
-            }
-
             if(empty($item->children('dc', true)->date)) {
                 return false;
             }
