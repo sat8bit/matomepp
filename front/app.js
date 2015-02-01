@@ -6,14 +6,22 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var ECT = require('ect');
 
+var basicAuth = require('basic-auth-connect');
+
 var routes = require('./routes/index');
 var apis = require('./routes/apis');
+var admins = require('./routes/admins');
 
 var app = express();
 
 // view engine setup
 app.engine('ect', ECT({ watch: true, root: __dirname + '/views', ext: '.ect' }).render);
 app.set('view engine', 'ect');
+
+// auth setup
+app.all('/admins', basicAuth(function(user, password) {
+    return user === 'matomepp' && password === 'matomeppnet';
+}));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -25,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/apis', apis);
+app.use('/admins', admins);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -56,6 +65,5 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
 
 module.exports = app;
