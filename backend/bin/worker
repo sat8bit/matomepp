@@ -25,11 +25,17 @@ $callback = function($msg) use ($rssRepo, $channel) {
     $url = $msg->body;
     try {
         $rssRepo->store(new RSS\RSS($url));
-        $channel->basic_publish(new AMQPMessage($url), '', 'rssurl');
         echo "[x] read $url\n";
     } catch (\Exception $e) {
         echo "[ ] error ! {$e->getMessage()}\n";
     }
+
+    try {
+        $channel->basic_publish(new AMQPMessage($url), '', 'rssurl');
+    } catch (\Exception $e) {
+        echo "[ ] enqueue error ! {$e->getMessage()}\n";
+    }
+
     sleep(10);
 };
 
