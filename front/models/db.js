@@ -7,7 +7,7 @@ exports.findArticle = function(articleId, callback) {
 };
 
 exports.findAllArticles = function(binds, callback) {
-    var sql = 'select a.title, a.url, a.description, DATE_FORMAT(a.date, "%Y/%m/%d %H:%i:%s") date, b.title blog_name from articles a, blogs b where a.blog_id = b.blog_id order by date desc limit :start, :results';
+    var sql = 'select a.title, a.url, a.description, DATE_FORMAT(a.date, "%Y/%m/%d %H:%i:%s") date, b.title blog_name from articles a, blogs b where a.blog_id = b.blog_id and date < now() order by date desc limit :start, :results';
 
     execute(sql, binds, callback);
 };

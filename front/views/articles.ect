@@ -1,0 +1,11 @@
+<div id="articles-list" class="list-group">
+
+<% for article in @articles : %>
+  <a href="<%- article.url %>" class="list-group-item">
+    <h6 class="list-group-item-heading"><%= article.title %></h6>
+    <p class="list-group-item-text text-right"><%= article.blog_name %></p>
+  </a>
+<% end %>
+</div>
+
+<div class="text-center"><button id="next-button" class="btn btn-default">続きを見る</button></div>

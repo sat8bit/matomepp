@@ -16,6 +16,8 @@
     "serve-favicon": "~2.2.0",
     "mysql2": "*",
     "ect": "*",
-    "basic-auth-connect": "*"
+    "amqp": "*",
+    "basic-auth-connect": "*",
+    "merge": "*"
   }
 }

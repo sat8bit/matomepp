@@ -3,46 +3,18 @@
 <% block 'navbarmenu' :%>
 <% end %>
 
-<% block 'script' : %>
-<script>
-    $(function() {
-        var head = 0;
-        var loading = false;
-
-        init();
-
-        function init() {
-            head = 0;
-            root = $('#blogs-list').empty();
-            loadBlogs();
-        }
-
-        function loadBlogs() {
-            if (loading) {
-                return;
-            }
-            loading = true;
-
-            $.getJSON('/apis/blogs', {start:head, needle:$('#needle').val()}, function(json) {
-                var root = $('#blogs-list');
-                $.each(json, function() {
-                    root.append(
-                        '<a target="_blank" href="' + this.index_url + '" class="list-group-item">'
-                            + '<h6 class="list-group-item-heading">' + this.blog_name + '</h6>'
-                            + '<p class="list-group-item-text text-right">' + this.index_url + '</p>'
-                        + '</a>'
-                    );
-                });
-                head += 20;
-                loading = false;
-            });
-        };
-
-        $('#next-button').click(loadBlogs);
-    });
-</script>
+<% block 'scripts' : %>
+<script src="/assets/js/blogs.js"></script>
 <% end %>
 
 <div id="blogs-list" class="list-group">
+
+<% for blog in @blogs : %>
+  <a href="<%- blog.index_url %>" class="list-group-item">
+    <h6 class="list-group-item-heading"><%= blog.blog_name %></h6>
+    <p class="list-group-item-text text-right"><%= blog.updated_at %></p>
+  </a>
+<% end %>
 </div>
+
 <div class="text-center"><button id="next-button" class="btn btn-default">続きを見る</button></div>
