@@ -61,7 +61,9 @@ router.get('/pickup/:article_id(\\d+)', function(req, res, next) {
 });
 
 router.get('/about', function(req, res, next) {
-    res.render('about', {title:'このサイトについて - まとめ速報++'});
+   rendering(res, 'about', {
+       title:'このサイトについて - まとめ速報++'
+   });
 });
 
 module.exports = router;
