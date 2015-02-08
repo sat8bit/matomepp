@@ -1,0 +1,12 @@
+<% extend 'layout.ect' %>
+
+<div id="articles-list" class="list-group">
+
+<% for article in @articles : %>
+  <a href="/rd?article_id=<%= article.article_id %>" class="list-group-item">
+    <h6 class="list-group-item-heading"><%= article.title %></h6>
+    <p class="list-group-item-text text-right"><%= article.blog_name %></p>
+    <p class="list-group-item-text text-right"><%= article.count %></p>
+  </a>
+<% end %>
+</div>

@@ -23,6 +23,11 @@ app.all('/admins', basicAuth(function(user, password) {
     return user === 'matomepp' && password === 'matomeppnet';
 }));
 
+// auth setup
+app.all('/admins/ranking', basicAuth(function(user, password) {
+    return user === 'matomepp' && password === 'matomeppnet';
+}));
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
