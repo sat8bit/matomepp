@@ -6,7 +6,8 @@ var db = require('../models/db');
 var rendering = function(res, template, params) {
     db.findAllRecommendations(function(recommendations) {
         var binds = {
-            recommendations : recommendations
+            recommendations : recommendations,
+            tracking_id : process.env.TRACKING_ID
         };
 
         res.render(template, merge(binds, params));
