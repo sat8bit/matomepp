@@ -48,7 +48,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">おすすめ <span class="caret"></span></a>
               <ul id="recommendation-list" class="dropdown-menu" role="menu">
                 <% for recommendation in @recommendations : %>
-                  <li><a href="/selection/<%- recommendation.keyword %>"><%- recommendation.keyword %></a></li>
+                  <li><a href="/s/<%- recommendation.keyword %>"><%- recommendation.keyword %></a></li>
                 <% end %>
   
               </ul>

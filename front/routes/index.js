@@ -33,9 +33,13 @@ router.get('/blogs', function(req, res, next) {
 });
 
 router.get('/selection/:needle', function(req, res, next) {
+    res.redirect('/s/' + req.params.needle);
+});
+
+router.get('/s/:needle', function(req, res, next) {
     db.findArticlesByNeedle({start:0, results:20, needle:req.params.needle}, function(articles) {
         rendering(res, 'selection', {
-            title :req.params.needle + 'まとめ速報++',
+            title : req.params.needle + 'のまとめ記事集めました。 - まとめ速報++' ,
             articles : articles,
             needle : req.params.needle
         });
@@ -61,9 +65,14 @@ router.get('/pickup/:article_id(\\d+)', function(req, res, next) {
 });
 
 router.get('/about', function(req, res, next) {
-   rendering(res, 'about', {
-       title:'このサイトについて - まとめ速報++'
-   });
+    rendering(res, 'about', {
+        title:'このサイトについて - まとめ速報++'
+    });
+});
+
+router.get('/sitemap.xml', function(req, res, next) {
+    res.set('Content-Type', 'application/xml;charset=UTF-8');
+    rendering(res, 'sitemap', {});
 });
 
 module.exports = router;
