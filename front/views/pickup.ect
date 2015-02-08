@@ -7,10 +7,10 @@
 <div id="pickup" class="panel panel-primary" style="margin-top:20px">
   <div class="panel-heading">Pickup記事</div>
   <div class="panel-body list-group" style="padding:0px">
-     <a href="<%= @pickup.url %>" class="list-group-item">
-       <h5 class="list-group-item-heading"><%= @pickup.title %></h5>
-       <p class="list-group-item-text text-right"><%= @pickup.blog_name %></p>
-     </a>
+    <a href="/rd/?article_id=<%= @pickup.article_id %>" class="list-group-item">
+      <h5 class="list-group-item-heading"><%= @pickup.title %></h5>
+      <p class="list-group-item-text text-right"><%= @pickup.blog_name %></p>
+    </a>
   </div>
 </div>
 

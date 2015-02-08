@@ -1,25 +1,25 @@
 var mysql = require('mysql2');
 
 exports.findArticle = function(articleId, callback) {
-    var sql = 'select a.title, a.url, a.description, DATE_FORMAT(a.date, "%Y/%m/%d %H:%i:%s") date, b.title blog_name from articles a, blogs b where a.blog_id = b.blog_id and a.article_id = :article_id';
+    var sql = 'select a.article_id, a.title, a.url, a.description, DATE_FORMAT(a.date, "%Y/%m/%d %H:%i:%s") date, b.title blog_name from articles a, blogs b where a.blog_id = b.blog_id and a.article_id = :article_id';
 
     execute(sql, {article_id: articleId}, callback);
 };
 
 exports.findAllArticles = function(binds, callback) {
-    var sql = 'select a.title, a.url, a.description, DATE_FORMAT(a.date, "%Y/%m/%d %H:%i:%s") date, b.title blog_name from articles a, blogs b where a.blog_id = b.blog_id and date < now() order by date desc limit :start, :results';
+    var sql = 'select a.article_id, a.title, a.url, a.description, DATE_FORMAT(a.date, "%Y/%m/%d %H:%i:%s") date, b.title blog_name from articles a, blogs b where a.blog_id = b.blog_id and date < now() order by date desc limit :start, :results';
 
     execute(sql, binds, callback);
 };
 
 exports.findArticlesByNeedle = function(binds, callback) {
-    var sql = 'select a.title, a.url, a.description, DATE_FORMAT(a.date, "%Y/%m/%d %H:%i:%s") date, b.title blog_name from articles a, blogs b where a.blog_id = b.blog_id AND a.title LIKE CONCAT("%", :needle, "%") order by date desc limit :start, :results';
+    var sql = 'select a.article_id, a.title, a.url, a.description, DATE_FORMAT(a.date, "%Y/%m/%d %H:%i:%s") date, b.title blog_name from articles a, blogs b where a.blog_id = b.blog_id AND a.title LIKE CONCAT("%", :needle, "%") order by date desc limit :start, :results';
 
     execute(sql, binds, callback);
 };
 
 exports.findArticlesByBlogId = function(binds, callback) {
-    var sql = 'select a.title, a.url, a.description, DATE_FORMAT(a.date, "%Y/%m/%d %H:%i:%s") date, b.title blog_name from articles a, blogs b where a.blog_id = b.blog_id AND a.blog_id = :blog_id order by date desc limit :start, :results';
+    var sql = 'select a.article_id, a.title, a.url, a.description, DATE_FORMAT(a.date, "%Y/%m/%d %H:%i:%s") date, b.title blog_name from articles a, blogs b where a.blog_id = b.blog_id AND a.blog_id = :blog_id order by date desc limit :start, :results';
 
     execute(sql, binds, callback);
 };
@@ -34,6 +34,12 @@ exports.findAllRecommendations = function(callback) {
     var sql = 'select keyword from recommendations order by keyword';
 
     execute(sql, {}, callback);
+};
+
+exports.countupAccess = function(articleId, callback) {
+    var sql = 'INSERT INTO accesses(article_id, count) VALUES(:article_id, 1) ON DUPLICATE KEY UPDATE count = count + 1';
+
+    execute(sql, {article_id: articleId}, callback);
 };
 
 var getConnection = function() {

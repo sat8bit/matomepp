@@ -13,12 +13,12 @@ var rendering = function(res, template, params) {
     });
 }
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
     db.findAllArticles({start:0, results:20}, function(articles) {
         rendering(res, 'index', {
             title :'まとめ速報++',
-            articles : articles
+            articles : articles,
+            description : '暇つぶしに最適！スマホ対応の軽量なまとめのまとめサイト'
         });
     });
 });
@@ -26,8 +26,8 @@ router.get('/', function(req, res, next) {
 router.get('/blogs', function(req, res, next) {
     db.findAllBlogs({start:0, results:20}, function(blogs) {
         rendering(res, 'blogs', {
-            title:'登録中のブログ一覧 - まとめ速報++',
-            blogs:blogs
+            title : '登録中のブログ一覧 - まとめ速報++',
+            blogs : blogs
         });
     });
 });
@@ -41,7 +41,8 @@ router.get('/s/:needle', function(req, res, next) {
         rendering(res, 'selection', {
             title : req.params.needle + 'のまとめ記事集めました。 - まとめ速報++' ,
             articles : articles,
-            needle : req.params.needle
+            needle : req.params.needle,
+            description : req.params.needle + 'のまとめ記事を集めたスマホ対応の軽量なまとめのまとめサイト'
         });
     });
 });
@@ -50,6 +51,7 @@ router.get('/pickup/:article_id(\\d+)', function(req, res, next) {
     db.findArticle(req.params.article_id, function(pickupArticles) {
         if (!pickupArticles.length) {
             res.redirect('/');
+            return;
         }
 
         var pickup = pickupArticles[0];
@@ -58,7 +60,8 @@ router.get('/pickup/:article_id(\\d+)', function(req, res, next) {
             rendering(res, 'pickup', {
                 title:'【Pickup】' + pickup.title + ' - まとめ速報++',
                 articles : articles,
-                pickup : pickup
+                pickup : pickup,
+                description : '「' + pickup.title + '」をピックアップ！'
             });
         });
     });
@@ -67,6 +70,26 @@ router.get('/pickup/:article_id(\\d+)', function(req, res, next) {
 router.get('/about', function(req, res, next) {
     rendering(res, 'about', {
         title:'このサイトについて - まとめ速報++'
+    });
+});
+
+router.get('/rd', function(req, res, next) {
+    if (!req.query.article_id) {
+        res.redirect('/');
+        return;
+    }
+
+    db.findArticle(req.query.article_id, function(articles) {
+        if (!articles.length) {
+            res.redirect('/');
+            return;
+        }
+
+        var article = articles[0];
+
+        res.redirect(article.url);
+
+        db.countupAccess(req.query.article_id, function(rows){});
     });
 });
 
