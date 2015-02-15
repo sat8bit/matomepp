@@ -1,1 +1,2 @@
-*/10 * * * * ~/matomepp/backend/bin/matomepp pickuptweet
+*/5 * * * * ~/matomepp/backend/bin/matomepp pickuptweet --newest
+*/10 * * * * ~/matomepp/backend/bin/matomepp pickuptweet --random

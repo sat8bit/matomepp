@@ -29,11 +29,12 @@ class PickupTweetService
 
     /**
      * @param Article $article
+     * @param string $header
      */
-    public function provide(Article $article)
+    public function provide(Article $article, $header = "")
     {
         $this->twitter->post("statuses/update", array(
-            "status"=> "{$article->getTitle()} >> http://matomepp.net/pickup/{$article->getArticleId()}"
+            "status"=> "$header {$article->getTitle()} >> http://matomepp.net/p/{$article->getArticleId()}"
         ));
 
         if ($this->twitter->getLastHttpCode() != 200) {

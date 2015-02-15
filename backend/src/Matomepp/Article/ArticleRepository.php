@@ -86,4 +86,40 @@ class ArticleRepository
 
         return $article;
     }
+
+    /**
+     * @return Article
+     */
+    public function findRandomArticleWithoutTweets()
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT
+                a.article_id
+              , a.title
+              , a.url
+            FROM
+                articles a
+                    LEFT JOIN
+                        tweets t ON
+                            a.article_id = t.article_id
+            WHERE
+                t.updated_at IS NULL
+            ORDER BY
+                rand()
+            LIMIT 1
+        ");
+
+        $stmt->execute();
+        $record = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (empty($record)) {
+            return null;
+        }
+
+        $article = new Article($record['article_id']);
+        $article->setTitle($record['title']);
+        $article->setUrl($record['url']);
+
+        return $article;
+    }
 }

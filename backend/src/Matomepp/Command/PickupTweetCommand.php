@@ -35,6 +35,18 @@ class PickupTweetCommand extends Command
                 'article-id',
                 InputArgument::OPTIONAL,
                 'pickup target article identifer.'
+            )
+            ->addOption(
+                'newest',
+                null,
+                InputOption::VALUE_NONE,
+                'tweet newest article.'
+            )
+            ->addOption(
+                'random',
+                null,
+                InputOption::VALUE_NONE,
+                'tweet random article.'
             );
     }
 
@@ -44,17 +56,19 @@ class PickupTweetCommand extends Command
 
         if (!empty($articleId)) {
             $article = $this->container['articleRepo']->findByArticleId($articleId);
-        } else {
+            return $this->container['pickupTweetService']->provide($article, '【ピックアップ】');
+        }
+
+        if ($input->getOption('newest')) {
             $article = $this->container['articleRepo']->findNewestArticleWithoutTweets();
+            return $this->container['pickupTweetService']->provide($article, '【新着】');
         }
 
-var_dump($article);
-
-        if (empty($article)) {
-            $output->writeln("no such article. article-id:$articleId");
-            return;
+        if ($input->getOption('random')) {
+            $article = $this->container['articleRepo']->findRandomArticleWithoutTweets();
+            return $this->container['pickupTweetService']->provide($article, '【発掘】');
         }
 
-        $this->container['pickupTweetService']->provide($article);
+        throw new \InvalidArgumentException('input article-id or option.');
     }
 }
