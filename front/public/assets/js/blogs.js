@@ -14,7 +14,7 @@ $(function() {
                 root.append(
                     '<a target="_blank" href="' + this.index_url + '" class="list-group-item">'
                         + '<h6 class="list-group-item-heading">' + this.blog_name + '</h6>'
-                        + '<p class="list-group-item-text text-right">' + this.index_url + '</p>'
+                        + '<p class="list-group-item-text text-right">' + this.updated_at + '</p>'
                     + '</a>'
                 );
             });
