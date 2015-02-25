@@ -36,7 +36,7 @@ $callback = function($msg) use ($rssRepo, $channel) {
         echo "[ ] enqueue error ! {$e->getMessage()}\n";
     }
 
-    sleep(10);
+    sleep(5);
 };
 
 $channel->basic_consume('rssurl', '', false, true, false, false, $callback);
