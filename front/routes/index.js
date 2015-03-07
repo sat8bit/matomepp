@@ -66,7 +66,7 @@ router.get('/p/:article_id(\\d+)', function(req, res, next) {
                 title:'【ピックアップ】' + pickup.title + ' - まとめ速報++/matomepp',
                 articles : articles,
                 pickup : pickup,
-                description : '「' + pickup.title + '」をピックアップ！'
+                description : pickup.description
             });
         });
     });
